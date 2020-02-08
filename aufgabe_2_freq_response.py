@@ -30,7 +30,7 @@ Fs = 48000
 f = np.arange(1,Fs)
 
 
-#%%Frequenz-Antwort System 1
+   #%%Frequenz-Antwort System 1
 w, h = signal.freqz(b1, a1, worN=Fs)
 #remove first sample which is zero
 h = h[1:]
@@ -78,8 +78,6 @@ plt.tight_layout()
 
 plt.savefig("aufgabe_2_frequ_response_system_1.png", dpi=150)
 plt.show()
-
-
 
 #%%Frequenz-Antwort System 2
 w, h = signal.freqz(b2, a2, worN=Fs)
