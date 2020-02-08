@@ -11,6 +11,33 @@ from scipy import signal
 import matplotlib.pyplot as plt
 import sounddevice as sd
 
+def signalgenerator(wellenform, amplitude, abtastrate, grundperiode, signallaenge):
+    """
+    Eingabeparameter:
+        wellenform      akzeptiert "sinus", "saegezahn", "dreieck", "rechteck"
+        amplitude
+        abtastrate      in Samples pro Sekunde
+        grundperiode    in Samples
+        signallaenge    in Sekunden
+    """
+    import numpy as np
+    import scipy.signal
+    import math
+    
+    if wellenform is "sinus":
+        y = np.array([amplitude*np.sin(2*math.pi/grundperiode*i)
+            for i in range(int(signallaenge*abtastrate))])
+    if wellenform is "saegezahn":
+        y = np.array([amplitude*scipy.signal.sawtooth(2*math.pi/grundperiode*i)
+            for i in range(int(signallaenge*abtastrate))])
+    if wellenform is "dreieck":
+        y = np.array([amplitude*scipy.signal.sawtooth(2*math.pi/grundperiode*i, width=0.5)
+            for i in range(int(signallaenge*abtastrate))])
+    if wellenform is "rechteck":
+        y = np.array([amplitude*scipy.signal.square(2*math.pi/grundperiode*i)
+            for i in range(int(signallaenge*abtastrate))])  
+    return y
+
 def normalize(v):
     '''
     "normalize" array to max value of 1
@@ -67,7 +94,7 @@ sd.play(sprache_filtered_system_2, sprache_sr)
 sd.wait()
 
 
-#plot Musik
+#%%plot Musik
 plt.figure(figsize=(10,10))
 plt.subplot(3,1,1)
 plt.plot(musik_time, musik)
@@ -91,7 +118,7 @@ plt.title('musik.wav gefiltert mit System 2')
 plt.tight_layout()
 plt.savefig('musik_filtered.png')
 
-#plot Sprache
+#%%plot Sprache
 plt.figure(figsize=(10,10))
 plt.subplot(3,1,1)
 plt.plot(sprache_time, sprache)
@@ -114,3 +141,127 @@ plt.ylim([-1,1])
 plt.title('sprache.wav gefiltert mit System 2')
 plt.tight_layout()
 plt.savefig('sprache_filtered.png')
+
+#%%sinus
+
+amplitude = 1
+sr = 48000
+grundperiode = 10
+#signallaenge in sekunden fuer 4 perioden
+signallaenge = (4*grundperiode)/sr
+
+signale_zeit = np.linspace(0,signallaenge, num=signallaenge*sr)
+
+sinus = signalgenerator("sinus", amplitude, sr, grundperiode, signallaenge)
+sinus_gefiltert_system1 = scipy.signal.lfilter(b1,a1,sinus)
+sinus_gefiltert_system2 = scipy.signal.lfilter(b1,a1,sinus)
+
+plt.figure(figsize=(10,10))
+plt.subplot(3,1,1)
+plt.plot(signale_zeit, sinus)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.title('sinus mit Grund-Periode {}'.format(grundperiode))
+
+plt.subplot(3,1,2)
+plt.plot(signale_zeit, sinus_gefiltert_system1)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('sinus gefiltert mit System 1')
+
+plt.subplot(3,1,3)
+plt.plot(signale_zeit, sinus_gefiltert_system2)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('sinus gefiltert mit System 2')
+plt.tight_layout()
+plt.savefig('aufgabe_2_sinus_filtered.png')
+
+#%%rechteck
+
+rechteck = signalgenerator("rechteck", amplitude, sr, grundperiode, signallaenge)
+rechteck_gefiltert_system1 = scipy.signal.lfilter(b1,a1,rechteck)
+rechteck_gefiltert_system2 = scipy.signal.lfilter(b1,a1,rechteck)
+
+plt.figure(figsize=(10,10))
+plt.subplot(3,1,1)
+plt.plot(signale_zeit, rechteck)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.title('rechteck mit Grund-Periode {}'.format(grundperiode))
+
+plt.subplot(3,1,2)
+plt.plot(signale_zeit, rechteck_gefiltert_system1)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('rechteck gefiltert mit System 1')
+
+plt.subplot(3,1,3)
+plt.plot(signale_zeit, rechteck_gefiltert_system2)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('rechteck gefiltert mit System 2')
+plt.tight_layout()
+plt.savefig('aufgabe_2_rechteck_filtered.png')
+
+#%%saegezahn
+
+saegezahn = signalgenerator("saegezahn", amplitude, sr, grundperiode, signallaenge)
+saegezahn_gefiltert_system1 = scipy.signal.lfilter(b1,a1,saegezahn)
+saegezahn_gefiltert_system2 = scipy.signal.lfilter(b1,a1,saegezahn)
+
+plt.figure(figsize=(10,10))
+plt.subplot(3,1,1)
+plt.plot(signale_zeit, saegezahn)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.title('saegezahn mit Grund-Periode {}'.format(grundperiode))
+
+plt.subplot(3,1,2)
+plt.plot(signale_zeit, saegezahn_gefiltert_system1)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('saegezahn gefiltert mit System 1')
+
+plt.subplot(3,1,3)
+plt.plot(signale_zeit, saegezahn_gefiltert_system2)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('saegezahn gefiltert mit System 2')
+plt.tight_layout()
+plt.savefig('aufgabe_2_saegezahn_filtered.png')
+
+#%%dreick
+
+dreieck = signalgenerator("dreieck", amplitude, sr, grundperiode, signallaenge)
+dreieck_gefiltert_system1 = scipy.signal.lfilter(b1,a1,dreieck)
+dreieck_gefiltert_system2 = scipy.signal.lfilter(b1,a1,dreieck)
+
+plt.figure(figsize=(10,10))
+plt.subplot(3,1,1)
+plt.plot(signale_zeit, dreieck)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.title('dreieck mit Grund-Periode {}'.format(grundperiode))
+
+plt.subplot(3,1,2)
+plt.plot(signale_zeit, dreieck_gefiltert_system1)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('dreieck gefiltert mit System 1')
+
+plt.subplot(3,1,3)
+plt.plot(signale_zeit, dreieck_gefiltert_system2)
+plt.xlabel('Zeit [s]')
+plt.ylabel('Amplitude')
+plt.ylim([-1,1])
+plt.title('dreieck gefiltert mit System 2')
+plt.tight_layout()
+plt.savefig('aufgabe_2_dreieck_filtered.png')

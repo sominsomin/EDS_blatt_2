@@ -20,16 +20,16 @@ def signalgenerator(wellenform, amplitude, abtastrate, grundperiode, signallaeng
     
     if wellenform is "sinus":
         y = np.array([amplitude*np.sin(2*math.pi/grundperiode*i)
-            for i in range(signallaenge*abtastrate)])
+            for i in range(int(signallaenge*abtastrate))])
     if wellenform is "saegezahn":
         y = np.array([amplitude*scipy.signal.sawtooth(2*math.pi/grundperiode*i)
-            for i in range(signallaenge*abtastrate)])
+            for i in range(int(signallaenge*abtastrate))])
     if wellenform is "dreieck":
         y = np.array([amplitude*scipy.signal.sawtooth(2*math.pi/grundperiode*i, width=0.5)
-            for i in range(signallaenge*abtastrate)])
+            for i in range(int(signallaenge*abtastrate))])
     if wellenform is "rechteck":
         y = np.array([amplitude*scipy.signal.square(2*math.pi/grundperiode*i)
-            for i in range(signallaenge*abtastrate)])  
+            for i in range(int(signallaenge*abtastrate))])  
     return y
 
 
