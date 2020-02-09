@@ -84,14 +84,14 @@ sprache_filtered_system_2 = scipy.signal.lfilter(b2,a2,sprache)
 
 #play audio one after the other
 #uncomment to play the audio
-sd.play(musik_filtered_system_1, musik_sr)
-sd.wait()
-sd.play(musik_filtered_system_2, musik_sr)
-sd.wait()
-sd.play(sprache_filtered_system_1, sprache_sr)
-sd.wait()
-sd.play(sprache_filtered_system_2, sprache_sr)
-sd.wait()
+#sd.play(musik_filtered_system_1, musik_sr)
+#sd.wait()
+#sd.play(musik_filtered_system_2, musik_sr)
+#sd.wait()
+#sd.play(sprache_filtered_system_1, sprache_sr)
+#sd.wait()
+#sd.play(sprache_filtered_system_2, sprache_sr)
+#sd.wait()
 
 
 #%%plot Musik
@@ -145,16 +145,16 @@ plt.savefig('sprache_filtered.png')
 #%%sinus
 
 amplitude = 1
-sr = 48000
-grundperiode = 10
+sr = 16000
+grundperiode = 40
 #signallaenge in sekunden fuer 4 perioden
-signallaenge = (4*grundperiode)/sr
+signallaenge = (100*grundperiode)/sr
 
 signale_zeit = np.linspace(0,signallaenge, num=signallaenge*sr)
 
 sinus = signalgenerator("sinus", amplitude, sr, grundperiode, signallaenge)
 sinus_gefiltert_system1 = scipy.signal.lfilter(b1,a1,sinus)
-sinus_gefiltert_system2 = scipy.signal.lfilter(b1,a1,sinus)
+sinus_gefiltert_system2 = scipy.signal.lfilter(b2,a2,sinus)
 
 plt.figure(figsize=(10,10))
 plt.subplot(3,1,1)
@@ -183,7 +183,7 @@ plt.savefig('aufgabe_2_sinus_filtered.png')
 
 rechteck = signalgenerator("rechteck", amplitude, sr, grundperiode, signallaenge)
 rechteck_gefiltert_system1 = scipy.signal.lfilter(b1,a1,rechteck)
-rechteck_gefiltert_system2 = scipy.signal.lfilter(b1,a1,rechteck)
+rechteck_gefiltert_system2 = scipy.signal.lfilter(b2,a2,rechteck)
 
 plt.figure(figsize=(10,10))
 plt.subplot(3,1,1)
@@ -212,7 +212,7 @@ plt.savefig('aufgabe_2_rechteck_filtered.png')
 
 saegezahn = signalgenerator("saegezahn", amplitude, sr, grundperiode, signallaenge)
 saegezahn_gefiltert_system1 = scipy.signal.lfilter(b1,a1,saegezahn)
-saegezahn_gefiltert_system2 = scipy.signal.lfilter(b1,a1,saegezahn)
+saegezahn_gefiltert_system2 = scipy.signal.lfilter(b2,a2,saegezahn)
 
 plt.figure(figsize=(10,10))
 plt.subplot(3,1,1)
@@ -241,7 +241,7 @@ plt.savefig('aufgabe_2_saegezahn_filtered.png')
 
 dreieck = signalgenerator("dreieck", amplitude, sr, grundperiode, signallaenge)
 dreieck_gefiltert_system1 = scipy.signal.lfilter(b1,a1,dreieck)
-dreieck_gefiltert_system2 = scipy.signal.lfilter(b1,a1,dreieck)
+dreieck_gefiltert_system2 = scipy.signal.lfilter(b2,a2,dreieck)
 
 plt.figure(figsize=(10,10))
 plt.subplot(3,1,1)
@@ -265,3 +265,50 @@ plt.ylim([-1,1])
 plt.title('dreieck gefiltert mit System 2')
 plt.tight_layout()
 plt.savefig('aufgabe_2_dreieck_filtered.png')
+
+
+#%%play audio
+
+sinus = signalgenerator("sinus", amplitude, sr, grundperiode, 2)
+sinus_gefiltert_system1 = scipy.signal.lfilter(b1,a1,sinus)
+sinus_gefiltert_system2 = scipy.signal.lfilter(b2,a2,sinus)
+
+dreieck = signalgenerator("dreieck", amplitude, sr, grundperiode, 2)
+dreieck_gefiltert_system1 = scipy.signal.lfilter(b1,a1,dreieck)
+dreieck_gefiltert_system2 = scipy.signal.lfilter(b2,a2,dreieck)
+
+saegezahn = signalgenerator("saegezahn", amplitude, sr, grundperiode, 2)
+saegezahn_gefiltert_system1 = scipy.signal.lfilter(b1,a1,saegezahn)
+saegezahn_gefiltert_system2 = scipy.signal.lfilter(b2,a2,saegezahn)
+
+rechteck = signalgenerator("rechteck", amplitude, sr, grundperiode, 2)
+rechteck_gefiltert_system1 = scipy.signal.lfilter(b1,a1,rechteck)
+rechteck_gefiltert_system2 = scipy.signal.lfilter(b2,a2,rechteck)
+
+
+#play audio one after the other
+#uncomment to play the audio
+#sd.play(sinus, sr)
+#sd.wait()
+#sd.play(sinus_gefiltert_system1, sr)
+#sd.wait()
+#sd.play(sinus_gefiltert_system2, sr)
+#sd.wait()
+#sd.play(dreieck, sr)
+#sd.wait()
+#sd.play(dreieck_gefiltert_system1, sr)
+#sd.wait()
+#sd.play(dreieck_gefiltert_system2, sr)
+#sd.wait()
+#sd.play(saegezahn, sr)
+#sd.wait()
+#sd.play(saegezahn_gefiltert_system1, sr)
+#sd.wait()
+#sd.play(saegezahn_gefiltert_system2, sr)
+#sd.wait()
+#sd.play(rechteck, sr)
+#sd.wait()
+#sd.play(rechteck_gefiltert_system1, sr)
+#sd.wait()
+#sd.play(rechteck_gefiltert_system2, sr)
+#sd.wait()
