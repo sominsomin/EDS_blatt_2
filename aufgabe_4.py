@@ -46,7 +46,7 @@ def plotAll(b,a, Fs, title) :
     gd = gd[1:]
     
     #phase delay
-    pd = np.angle(h)/(2*np.pi*f)
+    pd = -np.angle(h)/(wGd[1:])
     
     # Plotten
     plt.figure(figsize=(7.5,10))
@@ -69,7 +69,7 @@ def plotAll(b,a, Fs, title) :
     plt.title('Gruppenlaufzeit und Phasenlaufzeit')
     plt.plot(f, gd)
     plt.plot(f, pd)
-    plt.ylim([0,np.array([pd.max(),gd.max()]).max()])
+    plt.ylim([-1,1])
     plt.ylabel('Verzoegerung [samples]')
     plt.xlabel('Frequenz [Hz]')
     plt.legend(['Gruppenlaufzeit','Phasenlaufzeit'])

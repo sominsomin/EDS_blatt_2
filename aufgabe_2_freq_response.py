@@ -41,7 +41,7 @@ wGd, gd = signal.group_delay((b1, a1), Fs)
 gd = gd[1:]
 
 #phase delay
-pd = np.angle(h)/(2*np.pi*f)
+pd = -np.angle(h)/(wGd[1:])
 
 # Plotten
 fig = plt.figure(figsize=(7.5,10))
@@ -70,7 +70,7 @@ plt.xlabel('Frequenz [Hz]')
 plt.subplot(4,1,4)
 plt.title('Phasenlaufzeit')
 plt.plot(f, pd)
-plt.ylim([0, pd.max()])
+plt.ylim([-100, 1])
 plt.ylabel('Phaselaufzeit [samples]')
 plt.xlabel('Frequenz [Hz]')
 
@@ -90,7 +90,7 @@ wGd, gd = signal.group_delay((b2, a2), Fs)
 gd = gd[1:]
 
 #phase delay
-pd = np.angle(h)/(2*np.pi*f)
+pd = -np.angle(h)/(wGd[1:])
 
 # Plotten
 fig = plt.figure(figsize=(7.5,10))
@@ -119,7 +119,7 @@ plt.xlabel('Frequenz [Hz]')
 plt.subplot(4,1,4)
 plt.title('Phasenlaufzeit')
 plt.plot(f, pd)
-plt.ylim([0, pd.max()])
+plt.ylim([-100, 1])
 plt.ylabel('Phaselaufzeit [samples]')
 plt.xlabel('Frequenz [Hz]')
 
